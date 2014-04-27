@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/vect"
-	//. "github.com/vova616/chipmunk/transform" 
+	"github.com/TSavo/chipmunk/vect"
+	//. "github.com/TSavo/chipmunk/transform" 
 	"math"
 )
 
@@ -171,8 +171,8 @@ func (body *Body) SetMoment(moment vect.Float) {
 	body.i_inv = 1 / moment
 }
 
-func (body *Body) Moment() float32 {
-	return float32(body.i)
+func (body *Body) Moment() vect.Float {
+	return vect.Float(body.i)
 }
 
 func (body *Body) MomentIsInf() bool {
@@ -184,7 +184,7 @@ func (body *Body) SetAngle(angle vect.Float) {
 	body.setAngle(angle)
 }
 
-func (body *Body) AddAngle(angle float32) {
+func (body *Body) AddAngle(angle vect.Float) {
 	body.SetAngle(vect.Float(angle) + body.Angle())
 }
 
@@ -260,63 +260,63 @@ func (body *Body) SetPosition(pos vect.Vect) {
 	body.p = pos
 }
 
-func (body *Body) AddForce(x, y float32) {
+func (body *Body) AddForce(x, y vect.Float) {
 	body.f.X += vect.Float(x)
 	body.f.Y += vect.Float(y)
 }
 
-func (body *Body) SetForce(x, y float32) {
+func (body *Body) SetForce(x, y vect.Float) {
 	body.f.X = vect.Float(x)
 	body.f.Y = vect.Float(y)
 }
 
-func (body *Body) AddVelocity(x, y float32) {
+func (body *Body) AddVelocity(x, y vect.Float) {
 	body.v.X += vect.Float(x)
 	body.v.Y += vect.Float(y)
 }
 
-func (body *Body) SetVelocity(x, y float32) {
+func (body *Body) SetVelocity(x, y vect.Float) {
 	body.v.X = vect.Float(x)
 	body.v.Y = vect.Float(y)
 }
 
-func (body *Body) AddTorque(t float32) {
+func (body *Body) AddTorque(t vect.Float) {
 	body.t += vect.Float(t)
 }
 
-func (body *Body) Torque() float32 {
-	return float32(body.t)
+func (body *Body) Torque() vect.Float {
+	return vect.Float(body.t)
 }
 
 func (body *Body) VBias() vect.Vect {
 	return body.v_bias
 }
 
-func (body *Body) WBias() float32 {
-	return float32(body.w_bias)
+func (body *Body) WBias() vect.Float {
+	return vect.Float(body.w_bias)
 }
 
 func (body *Body) SetVBias(v vect.Vect) {
 	body.v_bias = v
 }
 
-func (body *Body) SetWBias(w float32) {
+func (body *Body) SetWBias(w vect.Float) {
 	body.w_bias = vect.Float(w)
 }
 
-func (body *Body) AngularVelocity() float32 {
-	return float32(body.w)
+func (body *Body) AngularVelocity() vect.Float {
+	return vect.Float(body.w)
 }
 
-func (body *Body) SetTorque(t float32) {
+func (body *Body) SetTorque(t vect.Float) {
 	body.t = vect.Float(t)
 }
 
-func (body *Body) AddAngularVelocity(w float32) {
+func (body *Body) AddAngularVelocity(w vect.Float) {
 	body.w += vect.Float(w)
 }
 
-func (body *Body) SetAngularVelocity(w float32) {
+func (body *Body) SetAngularVelocity(w vect.Float) {
 	body.w = vect.Float(w)
 }
 
@@ -332,8 +332,8 @@ func (body *Body) Angle() vect.Float {
 	return body.a
 }
 
-func (body *Body) Rot() (rx, ry float32) {
-	return float32(body.rot.X), float32(body.rot.Y)
+func (body *Body) Rot() (rx, ry vect.Float) {
+	return vect.Float(body.rot.X), vect.Float(body.rot.Y)
 }
 
 func (body *Body) UpdatePosition(dt vect.Float) {

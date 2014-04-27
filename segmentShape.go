@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/transform"
-	"github.com/vova616/chipmunk/vect"
+	"github.com/TSavo/chipmunk/transform"
+	"github.com/TSavo/chipmunk/vect"
 )
 
 //If Settings.AutoUpdateShapes is not set, call Update on the parent shape for changes to the A, B and Radius to take effect.
@@ -42,7 +42,7 @@ func (segment *SegmentShape) ShapeType() ShapeType {
 	return ShapeType_Segment
 }
 
-func (segment *SegmentShape) Moment(mass float32) vect.Float {
+func (segment *SegmentShape) Moment(mass vect.Float) vect.Float {
 
 	offset := vect.Mult(vect.Add(segment.A, segment.B), 0.5)
 

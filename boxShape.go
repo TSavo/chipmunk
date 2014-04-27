@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/transform"
-	"github.com/vova616/chipmunk/vect"
+	"github.com/TSavo/chipmunk/transform"
+	"github.com/TSavo/chipmunk/vect"
 )
 
 // Convenience wrapper around PolygonShape.
@@ -55,7 +55,7 @@ func NewBox(pos vect.Vect, w, h vect.Float) *Shape {
 	return shape
 }
 
-func (box *BoxShape) Moment(mass float32) vect.Float {
+func (box *BoxShape) Moment(mass vect.Float) vect.Float {
 	return (vect.Float(mass) * (box.Width*box.Width + box.Height*box.Height) / 12.0)
 }
 

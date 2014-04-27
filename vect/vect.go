@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-type Float float32
+type Float float64
 
 var (
 	Vector_Zero = Vect{0, 0}

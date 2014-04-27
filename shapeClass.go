@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/transform"
-	"github.com/vova616/chipmunk/vect"
+	"github.com/TSavo/chipmunk/transform"
+	"github.com/TSavo/chipmunk/vect"
 )
 
 type ShapeType int
@@ -38,7 +38,7 @@ type ShapeClass interface {
 	// Returns if the given point is located inside the shape.
 	TestPoint(point vect.Vect) bool
 
-	Moment(mass float32) vect.Float
+	Moment(mass vect.Float) vect.Float
 
 	Clone(s *Shape) ShapeClass
 	//marshalShape(shape *Shape) ([]byte, error)

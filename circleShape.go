@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/transform"
-	"github.com/vova616/chipmunk/vect"
+	"github.com/TSavo/chipmunk/transform"
+	"github.com/TSavo/chipmunk/vect"
 )
 
 type CircleShape struct {
@@ -16,7 +16,7 @@ type CircleShape struct {
 }
 
 // Creates a new CircleShape with the given center and radius.
-func NewCircle(pos vect.Vect, radius float32) *Shape {
+func NewCircle(pos vect.Vect, radius vect.Float) *Shape {
 	shape := newShape()
 	circle := &CircleShape{
 		Position: pos,
@@ -32,7 +32,7 @@ func (circle *CircleShape) ShapeType() ShapeType {
 	return ShapeType_Circle
 }
 
-func (circle *CircleShape) Moment(mass float32) vect.Float {
+func (circle *CircleShape) Moment(mass vect.Float) vect.Float {
 	return (vect.Float(mass) * (0.5 * (circle.Radius * circle.Radius))) + vect.LengthSqr(circle.Position)
 }
 

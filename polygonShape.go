@@ -1,8 +1,8 @@
 package chipmunk
 
 import (
-	"github.com/vova616/chipmunk/transform"
-	"github.com/vova616/chipmunk/vect"
+	"github.com/TSavo/chipmunk/transform"
+	"github.com/TSavo/chipmunk/vect"
 
 	"log"
 	//"fmt"
@@ -47,7 +47,7 @@ func NewPolygon(verts Vertices, offset vect.Vect) *Shape {
 	return shape
 }
 
-func (poly *PolygonShape) Moment(mass float32) vect.Float {
+func (poly *PolygonShape) Moment(mass vect.Float) vect.Float {
 
 	sum1 := vect.Float(0)
 	sum2 := vect.Float(0)
