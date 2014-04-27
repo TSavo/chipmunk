@@ -25,13 +25,13 @@ var (
 )
 
 func addBall() {
-	x := rand.Intn(535) + 115
+	x := rand.Intn(1135) + 115
 	ball := chipmunk.NewCircle(vect.Vector_Zero, vect.Float(ballRadius))
-	ball.SetElasticity(0.85)
-	body := chipmunk.NewBody(vect.Float(1), ball.Moment(vect.Float(0.00075)))
+	ball.SetElasticity(0.65)
+	body := chipmunk.NewBody(vect.Float(.001), ball.Moment(vect.Float(0.000075)))
 	body.SetPosition(vect.Vect{vect.Float(x), 100.0})
-	body.SetAngle(vect.Float(rand.Float32() * 2 * math.Pi))
-	t := 2000
+	body.SetAngle(vect.Float(rand.Float64() * 2 * math.Pi))
+	t := 200
 	if(rand.Intn(2) == 1){
 		t *= -1
 	}
@@ -46,7 +46,7 @@ func step(dt float32) {
 	space.Step(vect.Float(dt))
 	for i := 0; i < len(balls); i++ {
 		p := balls[i].Shape.Body.Position()
-		if p.Y > 1000 {
+		if p.Y > 1500 {
 			space.RemoveBody(balls[i].Shape.Body)
 			balls = append(balls[:i], balls[i+1:]...)
 			i-- // consider same index again
@@ -62,8 +62,8 @@ func createBodies() {
 
 	staticBody := chipmunk.NewBodyStatic()
 	staticLines = []*chipmunk.Shape{
-		chipmunk.NewSegment(vect.Vect{111.0, 480.0}, vect.Vect{607.0, 646.0}, 0),
-		chipmunk.NewSegment(vect.Vect{607.0, 646.0}, vect.Vect{607.0, 343.0}, 0),
+		chipmunk.NewSegment(vect.Vect{111.0, 580.0}, vect.Vect{1107.0, 580.0}, 0),
+		chipmunk.NewSegment(vect.Vect{1107.0, 580.0}, vect.Vect{1107.0, 343.0}, 0),
 	}
 	for _, segment := range staticLines {
 		segment.SetElasticity(0.9)
