@@ -97,7 +97,7 @@ func NewSpace() (space *Space) {
 
 	space.Gravity = vect.Vector_Zero
 
-	space.damping = 1
+	space.damping = 0.8
 
 	space.collisionSlop = 0.5
 	space.collisionBias = vect.Float(math.Pow(1.0-0.1, 60))

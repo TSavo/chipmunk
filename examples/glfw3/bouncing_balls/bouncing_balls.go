@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	//"fmt"
 	"github.com/TSavo/chipmunk"
 	"github.com/TSavo/chipmunk/vect"
 	"math"
 	"math/rand"
 	"net"
-	"time"
+	//"time"
 )
 
 type Ship struct {
@@ -16,8 +17,8 @@ type Ship struct {
 }
 
 var (
-	ballRadius = 25
-	ballMass   = 1
+	ballRadius  = 25
+	ballMass    = 1
 	space       *chipmunk.Space
 	balls       []*Ship
 	staticLines []*chipmunk.Shape
@@ -26,16 +27,17 @@ var (
 
 func addBall() {
 	x := rand.Intn(1135) + 115
-	ball := chipmunk.NewCircle(vect.Vector_Zero, vect.Float(ballRadius))
-	ball.SetElasticity(0.65)
-	body := chipmunk.NewBody(vect.Float(.001), ball.Moment(vect.Float(0.000075)))
+	//ball := chipmunk.NewCircle(vect.Vector_Zero, vect.Float(ballRadius))
+	ball := chipmunk.NewBox(vect.Vector_Zero, 50, 50)
+	ball.SetElasticity(0.9)
+	body := chipmunk.NewBody(vect.Float(10000000), ball.Moment(vect.Float(100000000)))
 	body.SetPosition(vect.Vect{vect.Float(x), 100.0})
 	body.SetAngle(vect.Float(rand.Float64() * 2 * math.Pi))
-	t := 200
-	if(rand.Intn(2) == 1){
-		t *= -1
-	}
-	body.AddTorque(vect.Float(t))
+	//	t := 2
+	//	if(rand.Intn(2) == 1){
+	//		t *= -1
+	//	}
+	//	body.AddTorque(vect.Float(t))
 	body.AddShape(ball)
 	space.AddBody(body)
 	balls = append(balls, &Ship{x, ball})
@@ -62,14 +64,23 @@ func createBodies() {
 
 	staticBody := chipmunk.NewBodyStatic()
 	staticLines = []*chipmunk.Shape{
-		chipmunk.NewSegment(vect.Vect{111.0, 580.0}, vect.Vect{1107.0, 580.0}, 0),
-		chipmunk.NewSegment(vect.Vect{1107.0, 580.0}, vect.Vect{1107.0, 343.0}, 0),
+		chipmunk.NewSegment(vect.Vect{100.0, 500.0}, vect.Vect{1000.0, 500.0}, 0),
+		chipmunk.NewSegment(vect.Vect{1000.0, 500.0}, vect.Vect{1000.0, 100.0}, 0),
 	}
 	for _, segment := range staticLines {
 		segment.SetElasticity(0.9)
 		staticBody.AddShape(segment)
 	}
 	space.AddBody(staticBody)
+}
+
+type Box struct {
+	Id int
+	X, Y, A vect.Float
+}
+
+type Line struct {
+	Point1, Point2 vect.Vect
 }
 
 func main() {
@@ -81,9 +92,10 @@ func main() {
 		if err != nil {
 			continue
 		}
+		encoder := json.NewEncoder(conn)
 		createBodies()
 		ticksToNextBall := 10
-		ticker := time.NewTicker(time.Second / 60)
+		//ticker := time.NewTicker(time.Second / 60)
 		for {
 			ticksToNextBall--
 			if ticksToNextBall == 0 {
@@ -91,13 +103,23 @@ func main() {
 				addBall()
 			}
 			step(1.0 / 60.0)
-			fmt.Fprintf(conn, "refresh\n")
-			for _, x := range balls {
-				if x.Shape.Body != nil {
-					fmt.Fprintf(conn, "%d,%f,%f,%f\n", x.Id, x.Shape.Body.Position().X, x.Shape.Body.Position().Y, x.Shape.Body.Angle())
-				}
+			
+			message := make(map[string]interface{})
+			
+			boxes := make([]Box, len(balls))
+			
+			for i, x := range balls {
+				boxes[i] = Box{x.Id, x.Shape.Body.Position().X, x.Shape.Body.Position().Y, x.Shape.Body.Angle()}
 			}
-			<-ticker.C // wait up to 1/60th of a second
+			lines := make([]Line, len(staticLines))
+			for i, x := range staticLines {
+				lines[i].Point1 = x.GetAsSegment().A
+				lines[i].Point2 = x.GetAsSegment().B
+			}
+			message["boxes"] = boxes
+			message["lines"] = lines
+			encoder.Encode(message)
+			//<-ticker.C // wait up to 1/60th of a second
 		}
 	}
 	// set up physics
